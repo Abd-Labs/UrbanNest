@@ -2,6 +2,7 @@ import React from "react";
 import InfoCard from "../components/Cards/InfoCard";
 import AnalysticsWidget from "../components/Sections/AnalyticsWidget";
 import RefralSection from "../components/Sections/RefralSection";
+import PropertySection from "../components/Sections/PropertySection";
 const DashBoard = () => {
   return (
      <div className="" >
@@ -25,6 +26,9 @@ const DashBoard = () => {
                   <AnalysticsWidget/>
                   <RefralSection/>
              </div>
+
+             <PropertySection />
+
           </div>
 
        

@@ -21,7 +21,7 @@ function App() {
 
       <div className="flex">
 
-          <div className=" hidden sm:block top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 "> <Menu/></div>
+          <div className=" hidden sm:block top-0 left-0 mb-4 z-40 w-64 min-h-screen  transition-transform -translate-x-full sm:translate-x-0 "> <Menu/></div>
           <div className="w-full"><Outlet/></div>
 
       </div>

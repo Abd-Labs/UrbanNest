@@ -26,7 +26,7 @@ const Header = () => {
   return (
     <div className=' h-[80px] bg-white py-3 px-4 flex items-center '>
 
-      <div className='hidden sm:block py-2 px-2'><p className='font-black text-xl italic text-blue-700'>RealEsta</p></div>
+      <div className='hidden sm:block py-2 px-2'><p className='font-black text-xl italic text-blue-700'>UrbanNest</p></div>
 
       {/* Hamburger Button */}
 

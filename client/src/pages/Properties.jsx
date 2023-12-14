@@ -2,7 +2,7 @@ import React from 'react'
 
 const Properties = () => {
   return (
-    <div>
+    <div className='p-4'>
       All Properties
     </div>
   )
