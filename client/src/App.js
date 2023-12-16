@@ -10,6 +10,7 @@ import Properties from "./pages/Properties"
 import Header from "./components/Sections/Header";
 import Menu from "./components/Sections/Menu";
 import DashBoard from "./pages/DashBoard";
+import CreateProperty from "./pages/CreateProperty";
 
 function App() {
 
@@ -48,6 +49,12 @@ function App() {
           path: "/Properties",
           element: (
             <Properties/>
+          ),
+        },
+        {
+          path: "/properties/create",
+          element: (
+            <CreateProperty/>
           ),
         },
       ]
