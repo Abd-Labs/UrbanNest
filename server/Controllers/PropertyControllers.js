@@ -7,7 +7,7 @@ const createProperty = async (req, res) => {}
 const updateProperty = async (req, res) => {}
 const deleteProperty = async (req, res) => {}
 
-module.export = {
+module.exports = {
     getAllProperties,
     getPropertyDetail,
     createProperty,
