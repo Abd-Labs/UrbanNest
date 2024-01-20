@@ -21,16 +21,16 @@ app.use(
   })
 );
 
-app.use(
-  session({
-    secret: 'MySecretKey',
-    resave: true,
-    saveUninitialized: true,
-  })
-);
+// app.use(
+//   session({
+//     secret: 'MySecretKey',
+//     resave: true,
+//     saveUninitialized: true,
+//   })
+// );
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use(express.json({ limit: "50mb" }));
 
