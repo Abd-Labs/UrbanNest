@@ -6,10 +6,11 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
   router.get(
     '/google/callback',
-    passport.authenticate('google', { failureRedirect: 'http://localhost:3000',session: false,  }),
+    passport.authenticate('google', { failureRedirect: 'http://localhost:3000',session: false  }),
     (req, res) => {
       const token = req.user.token;
-      res.redirect(`http://localhost:3000/?token=${token}`);
+      
+      res.redirect(`http://localhost:3000`);
     }
   );
 
