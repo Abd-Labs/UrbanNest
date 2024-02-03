@@ -67,6 +67,7 @@ const CreateProperty = () => {
                 href="https://herotofu.com"
                 className="hover:underline"
                 target="_blank"
+                rel="noreferrer"
               >
                 HeroTofu
               </a>

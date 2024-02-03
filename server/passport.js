@@ -8,10 +8,10 @@ passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET_KEY,
   callbackURL: 'http://localhost:5000/auth/google/callback', // Update with your callback URL
-  session:false
 },
 async (accessToken, refreshToken, profile, done) => {
     try {
+      console.log("Came for authentication")
       const user = await createUser(profile);
 
       const token = generateToken(user);

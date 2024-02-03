@@ -1,10 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 const Login = () => {
+
+  const handleGoogleSignIn =  async () => {
+    // Redirect to the server route for Google authentication
+    console.log(process.env.REACT_APP_API_KEY )
+
+    window.location.href = `${process.env.REACT_APP_API_KEY}/auth/google`;
+  };
+
+
   return (
     <div>
       <>
+        
         {/* TW Elements is free under AGPL, with a commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com */}
         <section className="h-screen">
           <div className="container h-full px-6 py-24">
@@ -14,6 +23,7 @@ const Login = () => {
                 <img
                   src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
                   className="w-full"
+                  alt=""
                 />
               </div>
               {/* Right column container with form */}
@@ -23,31 +33,21 @@ const Login = () => {
                   <div className="relative mb-6" data-te-input-wrapper-init="">
                     <input
                       type="text"
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200"
                       id="exampleFormControlInput3"
                       placeholder="Email address"
                     />
-                    <label
-                      htmlFor="exampleFormControlInput3"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                    >
-                      Email address
-                    </label>
+                  
                   </div>
                   {/* Password input */}
-                  <div className="relative mb-6" data-te-input-wrapper-init="">
+                  <div className="relative mb-6 border-1 border-white" data-te-input-wrapper-init="">
                     <input
                       type="password"
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 "
                       id="exampleFormControlInput33"
                       placeholder="Password"
                     />
-                    <label
-                      htmlFor="exampleFormControlInput33"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                    >
-                      Password
-                    </label>
+                   
                   </div>
                   {/* Remember me checkbox */}
                   <div className="mb-6 flex items-center justify-between">
@@ -89,24 +89,15 @@ const Login = () => {
                       OR
                     </p>
                   </div>
-               
-                  <a
-                    className="mb-3  flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                    
-                    href="#!"
-                    role="button"
+                </form>
+                 {/* {Sign In with google Button} */}
+                 <button
+                    className="mb-3  flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]  focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                    onClick={handleGoogleSignIn}
                     data-te-ripple-init=""
                     data-te-ripple-color="light"
                   >
-                    {/* Gmail */}
-                    {/* <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="mr-2 h-3.5 w-3.5"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.36h2.86c1.45 0 2.64-1.1 2.64-2.45v-2.68h-5.28v1.35h2.92c-.27 1.53-1.68 2.7-3.44 2.7-1.97 0-3.58-1.6-3.58-3.58s1.6-3.58 3.58-3.58 3.58 1.6 3.58 3.58c0 .97-.37 1.88-1 2.56-.17.22-.4.44-.64.64-.24.18-.52.34-.83.47z" />
-                    </svg> */}
+                   
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       x="0px"
@@ -137,8 +128,7 @@ const Login = () => {
                       ></path>
                     </svg>
                    <p className="mx-3"> Continue with Gmail</p>
-                  </a>
-                </form>
+                  </button>
               </div>
             </div>
           </div>
