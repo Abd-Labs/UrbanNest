@@ -1,21 +1,21 @@
 const express = require('express')
 const app = express();
-const http = require("http");
 const cors = require("cors");
-const session = require('express-session');
 const dotenv = require('dotenv')
+dotenv.config();
 const connectDB = require('./mongodb/connect.js')
 const PropertyRoutes = require('./routes/v1/PropertyRoutes.js')
 const UserRoutes = require('./routes/v1/UserRoutes.js')
 const authRoute = require('./routes/auth-route.js')
-dotenv.config();
+
 const PORT = process.env.PORT || 5000;
 const passport = require('passport');
 require('./passport');
 
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.CLIENT_URL,
+    credentials:true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization",
   })

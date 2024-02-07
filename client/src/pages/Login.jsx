@@ -1,14 +1,48 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React ,{useState} from "react";
+import { Link,useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const Login = () => {
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleGoogleSignIn =  async () => {
     // Redirect to the server route for Google authentication
-    console.log(process.env.REACT_APP_API_KEY )
-
-    window.location.href = `${process.env.REACT_APP_API_KEY}/auth/google`;
+    window.location.href = `${process.env.REACT_APP_API_DOMAIN}/auth/google`;
   };
 
+  
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Make a POST request directly within the onSubmit handler
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_DOMAIN}/auth/login`,
+        formData,
+        { withCredentials: true }
+      );
+
+      console.log("Login successful!", response.data);
+
+      // Redirect to the home page after successful login
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error.response ? error.response.data.error : error.message);
+
+      // Set the error state to display error message to the user
+      setError(error.response ? error.response.data.error : "An error occurred during login");
+    }
+  };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
 
   return (
     <div>
@@ -16,6 +50,9 @@ const Login = () => {
         
         {/* TW Elements is free under AGPL, with a commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com */}
         <section className="h-screen">
+           {/* Display error message */}
+         {error && <div className="text-red-500">{error}</div>}
+
           <div className="container h-full px-6 py-24">
             <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
               {/* Left column container with background*/}
@@ -26,16 +63,18 @@ const Login = () => {
                   alt=""
                 />
               </div>
+
               {/* Right column container with form */}
               <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
-                <form >
+                <form onSubmit={handleLogin}>
                   {/* Email input */}
                   <div className="relative mb-6" data-te-input-wrapper-init="">
                     <input
                       type="text"
                       className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200"
-                      id="exampleFormControlInput3"
+                      id="email"
                       placeholder="Email address"
+                      onChange={handleChange}
                     />
                   
                   </div>
@@ -44,8 +83,9 @@ const Login = () => {
                     <input
                       type="password"
                       className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 "
-                      id="exampleFormControlInput33"
+                      id="password"
                       placeholder="Password"
+                      onChange={handleChange}
                     />
                    
                   </div>
@@ -56,7 +96,7 @@ const Login = () => {
                         className="relative float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
                         type="checkbox"
                         defaultValue=""
-                        id="exampleCheck3"
+                        id="checkbox"
                         defaultChecked=""
                       />
                       <label

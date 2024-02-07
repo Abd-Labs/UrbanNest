@@ -47,7 +47,7 @@ const Header = () => {
        <div  className={`absolute top-[80px] left-0 z-40 w-60 h-screen ${toggle ? 'block' : 'hidden'} sm:hidden`} > <Menu/></div>
 
        {/* SearchBar */}
-       <input type="text" placeholder="Search Property, Customer etc" className="input input-bordered w-full sm:w-[50%] max-w-sm   hidden sm:block bg-gray-200 h-[40px] ml-[15%] " />
+       <input type="text" placeholder="Search Property, Customer etc" className="input input-bordered w-full sm:w-[50%] max-w-sm text-black  hidden sm:block bg-gray-200 h-[40px] ml-[15%] " />
 
        {/* div for bell icon and Avatar */}
        <div className='flex sm:ml-auto ml-auto mx-4 '>

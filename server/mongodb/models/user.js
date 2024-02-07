@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
     password: { type: String },
     avatar: { type: String },
     allProperties: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Property' }],
-    googleId: { type: String, unique: true },
+    googleId: { type: String },
+    authType: { type: String, enum: ['regular', 'google'], default: 'regular' },
 }, { collection: 'Users' });
 
 

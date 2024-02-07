@@ -6,10 +6,6 @@ const generateToken = (user) => {
 
   const payload = {
     _id,
-    name,
-    email,
-    avatar,
-    // Exclude Google ID and properties from the payload
   };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });

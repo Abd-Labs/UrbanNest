@@ -14,8 +14,10 @@ const Protected = (props) => {
       ?.split('=')[1];
 
       if (authenticationSuccess === 'true') {
+        console.log('true')
         setIsLoggedIn(true);
       } else {
+        console.log('false');  
         <Navigate to="/login" /> // Redirect to login if not logged in
       }
   

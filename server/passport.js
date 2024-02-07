@@ -1,8 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken'); 
-const createUser = require('./utils/user/createUser')
-const generateToken = require('./utils/user/generateToken.js')
+
 
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
@@ -11,13 +10,7 @@ passport.use(new GoogleStrategy({
 },
 async (accessToken, refreshToken, profile, done) => {
     try {
-      console.log("Came for authentication")
-      const user = await createUser(profile);
-
-      const token = generateToken(user);
-
-      console.log("Authentication Successful");
-      return done(null, {token});
+      return done(null, {profile});
       } catch (error) {
         // Handle authentication error
         console.error("Authentication Error:", error);

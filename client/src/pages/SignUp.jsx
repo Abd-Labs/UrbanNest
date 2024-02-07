@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import {useState} from "react"
 import axios from "axios"
 const SignUp = () => {
@@ -11,6 +11,8 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   // Event handler for input changes
   const handleChange = (e) => {
@@ -22,11 +24,16 @@ const SignUp = () => {
 
     try {
       // Make a POST request directly within the onSubmit handler
-      const response = await axios.post('http://localhost:5000/api/users', formData);
+      const response = await axios.post(`${process.env.REACT_APP_API_DOMAIN}/api/users/new`, formData ,  { withCredentials: true });
 
-      console.log('User created successfully!', response.data);
+      console.log('User created successfully!');
+
+      navigate('/')
     } catch (error) {
-      console.error('Signup failed:', error.response ? error.response.data.error : error.message);
+      console.error("Signup failed:", error.response ? error.response.data.error : error.message);
+
+      // Set the error state to display error message to the user
+      setError(error.response ? error.response.data.error : "An error occurred during sign-up");
     }
   };
 
@@ -36,9 +43,13 @@ const SignUp = () => {
       <>
         {/* TW Elements is free under AGPL, with a commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com */}
         <section className="h-screen">
+
+
           <div className="container h-full px-6 py-24">
             {/* Right column container with form */}
             <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
+                      {/* Error message display */}
+             {error && <div className="text-red-500">{error}</div>}
 
               <form onSubmit={handleSubmit}>
                 {/* Name input */}
@@ -46,7 +57,7 @@ const SignUp = () => {
                   <input
                     type="text"
                     className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 "
-                    id="nameInput"
+                    id="name"
                     placeholder="Your Name"
                     onChange = {handleChange}
                   />
@@ -57,7 +68,7 @@ const SignUp = () => {
                   <input
                     type="text"
                     className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 "
-                    id="emailInput"
+                    id="email"
                     placeholder="Email address"
                     onChange = {handleChange}
 
@@ -80,7 +91,7 @@ const SignUp = () => {
                   <input
                     type="password"
                     className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 "
-                    id="confirm-password"
+                    id="confirmPassword"
                     placeholder="Confirm Password"
                     onChange = {handleChange}
 
@@ -96,6 +107,8 @@ const SignUp = () => {
                 >
                   Sign up
                 </button>
+              </form>
+
                 {/* Divider */}
                 <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
                   <p className="mx-4 mb-0 text-center font-semibold dark:text-neutral-200">
@@ -111,7 +124,6 @@ const SignUp = () => {
                 >
                   Back to Login
                 </Link>
-              </form>
             </div>
           </div>
         </section>
