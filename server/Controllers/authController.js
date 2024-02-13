@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const User = require('../mongodb/models/user.js');
 const createUser = require('../utils/user/createUser.js')
 const CLIENT_URL = process.env.CLIENT_URL;
+const mongoose = require('mongoose');
+
 
 const loginController = async (req,res) => {
 
@@ -17,7 +19,7 @@ const loginController = async (req,res) => {
     }
 
     // Compare the provided password with the hashed password in the database
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
       return res.status(401).json({ error: "Wrong password" });
@@ -37,25 +39,97 @@ const loginController = async (req,res) => {
   }
 }
 
+const signupController = async (req, res) => { // Rename from createUser to signup
+  const { name, email, password, confirmPassword } = req.body;
+
+  if (!password || !confirmPassword) {
+      return res.status(400).json({ error: 'Password and confirm Password are required' });
+  }
+
+  if (password !== confirmPassword) {
+      return res.status(400).json({ error: 'Password and confirm Password do not match' });
+  }
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+      const existingUser = await User.findOne({ email }).session(session);
+
+      if (existingUser) {
+        if (existingUser.authType === "google") {
+          return res.status(400).json({ error: 'Use other authentication type, Account exists with same email' });
+        }
+        return res.status(400).json({ error: 'User with this email already exists' });
+      }
+  
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newUser = new User({
+          name,
+          email,
+          password: hashedPassword,
+          allProperties: [],
+          authType: "regular",
+      });
+
+      await newUser.save({ session });
+
+      // Generate JWT token
+      const token = generateToken(newUser);
+
+      res.cookie("jwtToken", token, { maxAge: 60000, httpOnly: true });
+      res.cookie("authenticationSuccess", "true", { maxAge: '1hr' });
+      // Send the token and a success message back to the client
+
+      await session.commitTransaction();
+      session.endSession();
+
+      res.end()
+  } catch (error) {
+      console.error(error);
+
+      await session.abortTransaction();
+      session.endSession();
+
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
 // Google Callback controller
 const googleCallbackController = async (req, res) => {
+
+  const session = await mongoose.startSession();
+  session.startTransaction()
   try {
     const user = req.user;
     const profile = user.profile;
     
-    const userObject = await createUser(profile);
+    const userObject = await createUser(profile,session);
     const token = generateToken(userObject);
-    
     res.cookie("jwtToken", token, { maxAge: 60000, httpOnly: true, secure: true });
     res.cookie("authenticationSuccess", "true", { maxAge: 60000, secure: true });
+    await session.commitTransaction();
+    session.endSession();
     res.redirect(CLIENT_URL);
   } catch (error) {
-    console.error("Unexpected Error:", error);
-    res.status(500).send("Internal Server Error");
+    console.log("Came Here")
+    console.error(error);
+
+    await session.abortTransaction();
+    session.endSession();
+
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
+
+
 module.exports = {
   loginController,
-  googleCallbackController
-}
+  googleCallbackController,
+  signupController 
+};

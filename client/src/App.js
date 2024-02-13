@@ -11,6 +11,7 @@ import CreateProperty from "./pages/CreateProperty";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Layout from "./pages/Layout";
+import Agents from "./pages/Agents";
 import Protected from "./components/utils/Protected";
 
 function App() {
@@ -41,6 +42,12 @@ function App() {
           path: "/properties/create",
           element: (
             <CreateProperty/>
+          ),
+        },
+        {
+          path: "/agents",
+          element: (
+            <Agents/>
           ),
         },
       ]

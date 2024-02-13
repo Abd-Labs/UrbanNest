@@ -1,11 +1,11 @@
 const User = require('../../mongodb/models/user')
 
-const createUser = async (profile) => {
+const createUser = async (profile,session) => {
   try {
     const { displayName, emails, photos, id } = profile;
 
     // Check if the user already exists with the same email
-    const existingUser = await User.findOne({ email: emails[0].value });
+    const existingUser = await User.findOne({ email: emails[0].value }).session(session);
 
     if (existingUser) {
       // Check the authentication type of the existing user
@@ -14,7 +14,7 @@ const createUser = async (profile) => {
         existingUser.name = displayName;
         existingUser.googleId = id;
         existingUser.avatar = photos[0].value;
-        await existingUser.save();
+        await existingUser.save({session});
         console.log("Merged profiles");
         return existingUser;
       } else if (existingUser.authType === "google") {
@@ -31,14 +31,14 @@ const createUser = async (profile) => {
     }
     else{
     // If the user doesn't exist, create a new user
-    const newUser = await User.create({
+    const newUser = await User.create([{
       name: displayName,
       email: emails[0].value,
       avatar: photos[0].value,
       googleId: id,
       allProperties: [],
       authType: "google",
-    });
+    }],{session})
     console.log("New User created");
     return newUser;
   }
