@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require('dotenv')
 dotenv.config();
 const connectDB = require('./mongodb/connect.js')
+const cookieParser = require('cookie-parser')
 const PropertyRoutes = require('./routes/v1/PropertyRoutes.js')
 const UserRoutes = require('./routes/v1/UserRoutes.js')
 const authRoute = require('./routes/auth-route.js')
@@ -33,7 +34,7 @@ app.use(
 // app.use(passport.session());
 
 app.use(express.json({ limit: "50mb" }));
-
+app.use(cookieParser());
 app.use('/api/users',UserRoutes);
 app.use('/api/properties',PropertyRoutes);
 app.use('/auth',authRoute)

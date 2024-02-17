@@ -29,8 +29,8 @@ const loginController = async (req,res) => {
     const token = generateToken(user);
 
     // Set the token as a cookie
-    res.cookie("jwtToken", token, { maxAge: 60000, httpOnly: true });
-    res.cookie("authenticationSuccess", "true", { maxAge: 60000 });
+    res.cookie("jwtToken", token, { maxAge: 3600000, httpOnly: true });
+    res.cookie("authenticationSuccess", "true", { maxAge: 3600000 });
     // Send a success response
     res.json({ success: true, message: "Login successful" });
   } catch (error) {
@@ -79,8 +79,8 @@ const signupController = async (req, res) => { // Rename from createUser to sign
       // Generate JWT token
       const token = generateToken(newUser);
 
-      res.cookie("jwtToken", token, { maxAge: 60000, httpOnly: true });
-      res.cookie("authenticationSuccess", "true", { maxAge: '1hr' });
+      res.cookie("jwtToken", token, { maxAge: 3600000, httpOnly: true });
+      res.cookie("authenticationSuccess", "true", { maxAge: 3600000 });
       // Send the token and a success message back to the client
 
       await session.commitTransaction();
@@ -110,8 +110,8 @@ const googleCallbackController = async (req, res) => {
     
     const userObject = await createUser(profile,session);
     const token = generateToken(userObject);
-    res.cookie("jwtToken", token, { maxAge: 60000, httpOnly: true, secure: true });
-    res.cookie("authenticationSuccess", "true", { maxAge: 60000, secure: true });
+    res.cookie("jwtToken", token, { maxAge: 3600000, httpOnly: true, secure: true });
+    res.cookie("authenticationSuccess", "true", { maxAge: 3600000, secure: true });
     await session.commitTransaction();
     session.endSession();
     res.redirect(CLIENT_URL);

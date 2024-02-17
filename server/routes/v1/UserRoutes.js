@@ -1,12 +1,12 @@
 const express = require('express');
 
-const { createUser, getAllUsers , getUserByID } = require('../../Controllers/UserControllers');
+const {  getAllUsers , getUserByID } = require('../../Controllers/UserControllers');
 const authenticateToken = require('../../middlewares/validatejwt');
 
 const router = express.Router();
 
-router.get('/',getAllUsers )
-router.get('/:id', getUserByID);
+router.get('/', authenticateToken, getAllUsers )
+router.get('/:id', authenticateToken, getUserByID);
 
 
 module.exports = router;

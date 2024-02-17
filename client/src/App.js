@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Layout from "./pages/Layout";
 import Agents from "./pages/Agents";
+import Profile from "./pages/Profile";
 import Protected from "./components/utils/Protected";
 
 function App() {
@@ -48,6 +49,12 @@ function App() {
           path: "/agents",
           element: (
             <Agents/>
+          ),
+        },
+        {
+          path: "/agents/show",
+          element: (
+            <Profile/>
           ),
         },
       ]
