@@ -6,13 +6,14 @@ const {
   createProperty,
   updateProperty,
   deleteProperty,
+  upload
 } = require("../../Controllers/PropertyControllers");
 
 const router = express.Router();
 
 router.get('/', getAllProperties);
 router.get('/:id',getPropertyDetail);
-router.post('/',createProperty);
+router.post('/',upload.array('photos', 5),createProperty);
 router.put('/:id',updateProperty);
 router.delete('/:id',deleteProperty);
 

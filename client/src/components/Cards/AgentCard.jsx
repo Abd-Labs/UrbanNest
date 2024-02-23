@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { IoMailOutline } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5";
 import { CiPhone } from "react-icons/ci";
@@ -8,6 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 const AgentCard = ({ agent }) => {
 
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
   const navigate = useNavigate();
   return (
     <div className="bg-white rounded-lg flex shadow-md p-6 mb-4" onClick={()=>{navigate('/agents/show', { state: { agent } });
@@ -15,11 +21,15 @@ const AgentCard = ({ agent }) => {
       {/* Profile Image  */}
       <div className="flex flex-row  items-center mr-10">
       {agent && agent.avatar ? (
-          <img
-            src={agent.avatar}
-            alt="Agent Avatar"
-            className="w-12 h-12 rounded-full mr-4"
-          />
+                    <img
+                    src={agent.avatar}
+                    alt="Profile Avatar"
+                    className={`w-12 h-12 rounded-full mr-4 ${
+                      imageLoaded ? "" : "hidden" // Hide the image if it's not loaded yet
+                    }`}
+                    onLoad={handleImageLoad}
+                  />
+        
         ) : (
           <FaUserCircle className="w-12 h-12 rounded-full mr-4 text-gray-500" />
         )}

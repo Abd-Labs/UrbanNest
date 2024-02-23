@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
       }
       return res.status(403).json({ error: "Forbidden: Invalid token" });
     }
-    req.user = decoded.user;
+    req.user = decoded._id;
     next();
   });
 };

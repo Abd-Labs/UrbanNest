@@ -23,7 +23,7 @@ const loginController = async (req,res) => {
 
     if (!passwordMatch) {
       return res.status(401).json({ error: "Wrong password" });
-    }
+    }       
 
     // If the password is correct, generate a JWT token
     const token = generateToken(user);
@@ -116,7 +116,6 @@ const googleCallbackController = async (req, res) => {
     session.endSession();
     res.redirect(CLIENT_URL);
   } catch (error) {
-    console.log("Came Here")
     console.error(error);
 
     await session.abortTransaction();

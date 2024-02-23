@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const DropDownButton = ({ width, height, label, items, placeholder }) => {
+const DropDownButton = ({ width, height, label, items, placeholder,onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -11,6 +11,8 @@ const DropDownButton = ({ width, height, label, items, placeholder }) => {
   const handleSelect = (item) => {
     setSelectedItem(item);
     setIsOpen(false);
+    onChange && onChange(item.value); // Assuming `onChange` is passed as a prop
+
   };
 
   return (

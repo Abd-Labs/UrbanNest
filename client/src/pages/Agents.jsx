@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import AgentCard from "../components/Cards/AgentCard";
 import axios from 'axios';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const Agents = () => {
   const [users, setUsers] = useState([]);
@@ -28,7 +30,7 @@ const Agents = () => {
   }, []); // Empty dependency array means this effect runs only once when the component mounts
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Skeleton count={10} />;
   }
 
   if (error) {

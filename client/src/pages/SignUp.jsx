@@ -24,8 +24,8 @@ const SignUp = () => {
 
     try {
       // Make a POST request directly within the onSubmit handler
-      const response = await axios.post(`${process.env.REACT_APP_API_DOMAIN}/auth/signup`, formData ,  { withCredentials: true });
-
+      await axios.post(`${process.env.REACT_APP_API_DOMAIN}/auth/signup`, formData ,  { withCredentials: true });
+      
       console.log('User created successfully!');
 
       navigate('/')

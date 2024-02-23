@@ -1,12 +1,13 @@
 import React from "react";
 
-const InputFieldSmall = ({ label, placeholder, width, large }) => {
+const InputFieldSmall = ({ label, placeholder, width, large, name, value, onChange }) => {
   const inputStyle = `
     block
     ${width ? `w-${width}` : 'w-full'} 
     
     border-gray-300
     rounded-md
+    text-black
     shadow-sm
     focus:border-indigo-300
     focus:ring
@@ -18,6 +19,7 @@ const InputFieldSmall = ({ label, placeholder, width, large }) => {
     block
     ${width ? `w-${width}` : 'w-full'} 
     mt-1
+    text-black
     border-gray-300
     rounded-md
     shadow-sm
@@ -33,17 +35,21 @@ const InputFieldSmall = ({ label, placeholder, width, large }) => {
         <span className="text-gray-700 mb-2 ">{label}</span>
         {large ? (
           <textarea
-            name="name"
+            name={name}
             className={textareaStyle}
             placeholder={placeholder}
+            value={value}
+            onChange={onChange}
             rows={4} // Set the number of rows for multiline
           />
         ) : (
           <input
-            name="name"
+            name={name}
             type="text"
             className={inputStyle}
             placeholder={placeholder}
+            value={value}
+            onChange={onChange}
           />
         )}
       </label>
