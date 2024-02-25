@@ -6,7 +6,7 @@ import axios from "axios";
 
 const CreateProperty = () => {
   const [formData, setFormData] = useState({
-    propertyName: "",
+    title: "",
     description: "",
     type: "",
     price: "",
@@ -43,7 +43,7 @@ const CreateProperty = () => {
     const url = `${process.env.REACT_APP_API_DOMAIN}/api/properties`;
 
     const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.propertyName);
+    formDataToSend.append("title", formData.title);
     formDataToSend.append("description", formData.description);
     formDataToSend.append("PropertyType", formData.type);
     formDataToSend.append("price", formData.price);
@@ -79,8 +79,8 @@ const CreateProperty = () => {
           <InputField
             label="Enter Property Name"
             placeholder="Celeste Hotel.."
-            name="propertyName"
-            value={formData.propertyName}
+            name="title"
+            value={formData.title}
             onChange={handleInputChange}
           />
 

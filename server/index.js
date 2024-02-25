@@ -33,7 +33,8 @@ app.use(
 
 // app.use(passport.initialize());
 // app.use(passport.session());
-
+// Define a route to serve static files from the 'uploads' directory
+app.use('/uploads', express.static('uploads'));
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use('/auth',authRoute)

@@ -3,6 +3,10 @@ const User = require("../mongodb/models/user.js");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
+/**
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 const getAllProperties = async (req, res) => {
     try {
         const properties = await Property.find();
@@ -13,6 +17,7 @@ const getAllProperties = async (req, res) => {
     }
 };
 
+
 const getPropertyDetail = async (req, res) => {
     const { id } = req.params;
     try {
@@ -20,8 +25,6 @@ const getPropertyDetail = async (req, res) => {
         if (!property) {
             return res.status(404).json({ error: "Property not found" });
         }
-        // Assuming photos field contains paths to images
-        const photos = property.photos.map(photoPath => `${req.protocol}://${req.get('host')}/${photoPath}`);
         res.status(200).json({ ...property.toObject(), photos });
     } catch (error) {
         console.error("Error fetching property:", error);
@@ -31,40 +34,61 @@ const getPropertyDetail = async (req, res) => {
 
 const updateProperty = async (req, res) => {
     const { id } = req.params;
+    const session = await Property.startSession();
+    session.startTransaction();
     try {
-        const updatedProperty = await Property.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedProperty = await Property.findByIdAndUpdate(id, req.body, { new: true }).session(session);
         if (!updatedProperty) {
+            await session.abortTransaction();
+            session.endSession();
             return res.status(404).json({ error: "Property not found" });
         }
+        await session.commitTransaction();
+        session.endSession();
         res.status(200).json(updatedProperty);
     } catch (error) {
         console.error("Error updating property:", error);
+        await session.abortTransaction();
+        session.endSession();
+        if (error.name === 'CastError') {
+            return res.status(400).json({ error: "Invalid property ID format" });
+        }
         res.status(500).json({ message: "Internal server error" });
     }
 };
 
+
 const deleteProperty = async (req, res) => {
     const { id } = req.params;
+    const session = await Property.startSession();
+    session.startTransaction();
     try {
-        const deletedProperty = await Property.findByIdAndDelete(id);
+        const deletedProperty = await Property.findByIdAndDelete(id).session(session);
         if (!deletedProperty) {
+            await session.abortTransaction();
+            session.endSession();
             return res.status(404).json({ error: "Property not found" });
         }
+        await session.commitTransaction();
+        session.endSession();
         res.status(200).json({ message: "Property deleted successfully" });
     } catch (error) {
         console.error("Error deleting property:", error);
+        await session.abortTransaction();
+        session.endSession();
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
 
 const createProperty = async (req, res) => {
     const session = await Property.startSession();
     session.startTransaction();
     try {
+        console.log(req.body)
         const { title, description, location, PropertyType, price } = req.body;
         const creator = req.user; // Assuming req.user_id is set by the middleware
-        console.log(creator)
-        const photos = req.files.map((file) => file.path);
+        const photos = req.files.map((file) => `${req.protocol}://${req.get('host')}/${file.path}`);
 
         // Create a new property instance
         const newProperty = new Property({
@@ -77,7 +101,6 @@ const createProperty = async (req, res) => {
             creator,
         });
 
-        console.log(newProperty);
         // Save the property to the database
         await newProperty.save({ session });
         // Commit the transaction if everything is successful
@@ -89,7 +112,11 @@ const createProperty = async (req, res) => {
         // Rollback the transaction if any part of the process fails
         await session.abortTransaction();
         session.endSession();
-
+        if (error.name === 'ValidationError') {
+            // Handle validation errors
+            const errors = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error: errors });
+        }
         console.error("Error creating property:", error);
         res.status(500).json({ message: "Internal server error" });
     }
