@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation,Link } from "react-router-dom";
 
 const Profile = () => {
   const location = useLocation();
@@ -10,6 +10,21 @@ const Profile = () => {
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
+    // Array of objects for each link
+    const links = [
+      { url: "/", text: "Marketing" },
+      { url: "/", text: "Followers" },
+      { url: "/", text: "History" }
+    ];
+
+      // Array of objects for each link in stats
+  const stats = [
+    { url: "/", text: "320 Following" },
+    { url: "/", text: "2.5k Followers" },
+    { url: "/", text: "48 Deals" }
+  ];
+
+  
 
   return (
     <div>
@@ -29,7 +44,7 @@ const Profile = () => {
                     onLoad={handleImageLoad}
                   />
                 ) : (
-                  <FaUserCircle className="w-12 h-12 rounded-full mr-4 text-gray-500" />
+                  <FaUserCircle className="inline-block shrink-0 rounded-2xl w-[80px] h-[80px] lg:w-[160px] lg:h-[160px]" />
                 )}
 
                 <div className="group/tooltip relative">
@@ -72,7 +87,7 @@ const Profile = () => {
                           />
                         </svg>
                       </span>{" "}
-                      New York, NY{" "}
+                      Lahore,Pakistan{" "}
                     </a>
                     <a
                       className="flex items-center mb-2 mr-5 text-secondary-dark hover:text-primary"
@@ -89,7 +104,7 @@ const Profile = () => {
                           <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
                         </svg>
                       </span>{" "}
-                      contact@example.com{" "}
+                      {agent.email}{" "}
                     </a>
                   </div>
                 </div>
@@ -104,28 +119,16 @@ const Profile = () => {
                 </div>
               </div>
               <div className="flex flex-wrap justify-between">
-                <div className="flex flex-wrap items-center">
-                  <a
-                    href="/"
-                    className="mr-3 mb-2 inline-flex items-center justify-center text-secondary-inverse rounded-full bg-neutral-100 hover:bg-neutral-200 transition-all duration-200 ease-in-out px-3 py-1 text-sm font-medium leading-normal"
-                  >
-                    {" "}
-                    320 Following{" "}
-                  </a>
-                  <a
-                    href="/"
-                    className="mr-3 mb-2 inline-flex items-center justify-center text-secondary-inverse rounded-full bg-neutral-100 hover:bg-neutral-200 transition-all duration-200 ease-in-out px-3 py-1 text-sm font-medium leading-normal"
-                  >
-                    {" "}
-                    2.5k Followers{" "}
-                  </a>
-                  <a
-                    href="/"
-                    className="mr-3 mb-2 inline-flex items-center justify-center text-secondary-inverse rounded-full bg-neutral-100 hover:bg-neutral-200 transition-all duration-200 ease-in-out px-3 py-1 text-sm font-medium leading-normal"
-                  >
-                    {" "}
-                    48 Deals{" "}
-                  </a>
+              <div className="flex flex-wrap my-auto">
+                  {stats.map((stat, index) => (
+                    <a
+                      key={index}
+                      href={stat.url}
+                      className="mr-3 mb-2 inline-flex items-center justify-center text-secondary-inverse rounded-full bg-neutral-100 hover:bg-neutral-200 transition-all duration-200 ease-in-out px-3 py-1 text-sm font-medium leading-normal"
+                    >
+                      {stat.text}
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
@@ -135,57 +138,18 @@ const Profile = () => {
             nav-tabs=""
             className="group flex flex-wrap items-stretch text-[1.15rem] font-semibold list-none border-b-2 border-transparent border-solid active-assignments"
           >
-            <li className="flex mt-2 -mb-[2px]">
-              <a
-                aria-controls="summary"
-                className="py-5 mr-1 sm:mr-3 lg:mr-10 transition-colors duration-200 ease-in-out border-b-2 border-transparent group-[.active-summary]:border-primary group-[.active-summary]:text-primary text-muted hover:border-primary"
-                href="/"
-              >
-                {" "}
-                Summary{" "}
-              </a>
-            </li>
-            <li className="flex mt-2 -mb-[2px]">
-              <a
-                aria-controls="assignments"
-                className="py-5 mr-1 sm:mr-3 lg:mr-10 transition-colors duration-200 ease-in-out border-b-2 border-transparent group-[.active-assignments]:border-primary group-[.active-assignments]:text-primary text-muted hover:border-primary"
-                href="/"
-              >
-                {" "}
-                Assignments{" "}
-              </a>
-            </li>
-            <li className="flex mt-2 -mb-[2px]">
-              <a
-                aria-controls="marketing"
-                className="py-5 mr-1 sm:mr-3 lg:mr-10 transition-colors duration-200 ease-in-out border-b-2 border-transparent group-[.active-marketing]:border-primary group-[.active-marketing]:text-primary text-muted hover:border-primary"
-                href="/"
-              >
-                {" "}
-                Marketing{" "}
-              </a>
-            </li>
-            <li className="flex mt-2 -mb-[2px]">
-              <a
-                aria-controls="followers"
-                className="py-5 mr-1 sm:mr-3 lg:mr-10 transition-colors duration-200 ease-in-out border-b-2 border-transparent group-[.active-followers]:border-primary group-[.active-followers]:text-primary text-muted hover:border-primary"
-                href="/"
-              >
-                {" "}
-                Followers{" "}
-              </a>
-            </li>
-            <li className="flex mt-2 -mb-[2px] group">
-              <a
-                aria-controls="history"
-                className="py-5 mr-1 sm:mr-3 lg:mr-10 transition-colors duration-200 ease-in-out border-b-2 border-transparent group-[.active-history]:border-primary group-[.active-history]:text-primary text-muted hover:border-primary"
-                href="/"
-              >
-                {" "}
-                History{" "}
-              </a>
-            </li>
+            {links.map((link, index) => (
+              <li key={index} className="flex mt-2 -mb-[2px]">
+                <Link
+                  to={link.url}
+                  className="py-5 mr-1 sm:mr-3 lg:mr-10 transition-colors duration-200 ease-in-out border-b-2 border-transparent group-[.active-marketing]:border-primary group-[.active-marketing]:text-primary text-muted hover:border-primary"
+                >
+                  {link.text}
+                </Link>
+              </li>
+            ))}
           </ul>
+
         </div>
       </div>
     </div>

@@ -2,6 +2,8 @@ const Property = require("../mongodb/models/property");
 const User = require("../mongodb/models/user.js");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+const path = require('path'); // Add this line
+const fs = require('fs');
 
 /**
  * @param {Object} req - Express request object
@@ -63,12 +65,30 @@ const deleteProperty = async (req, res) => {
     const session = await Property.startSession();
     session.startTransaction();
     try {
+         // Find and delete the property
         const deletedProperty = await Property.findByIdAndDelete(id).session(session);
         if (!deletedProperty) {
             await session.abortTransaction();
             session.endSession();
             return res.status(404).json({ error: "Property not found" });
         }
+         // Delete the images associated with the property from the upload directory
+         deletedProperty.photos.forEach(photo => {
+            const imagePath = path.join(__dirname, '..', 'uploads', photo.split('/').pop());
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        });
+
+
+        // Find the user who owns the property
+        const user = await User.findById(deletedProperty.creator).session(session);
+        if (user) {
+            // Remove the reference to the deleted property from the user's allProperties array
+            user.allProperties.pull(deletedProperty._id);
+            await user.save({ session });
+        }
+        
         await session.commitTransaction();
         session.endSession();
         res.status(200).json({ message: "Property deleted successfully" });
@@ -103,6 +123,9 @@ const createProperty = async (req, res) => {
 
         // Save the property to the database
         await newProperty.save({ session });
+
+        // Update the user document to associate the property
+        await User.findByIdAndUpdate(creator, { $push: { allProperties: newProperty._id } }).session(session);
         // Commit the transaction if everything is successful
         await session.commitTransaction();
         session.endSession();
