@@ -1,12 +1,27 @@
-import React from "react";
+import React, {useState} from "react";
+import axios from "axios";
 import PropertyCard from "../Cards/PropertyCard";
 import DropDownButton from "../Buttons/DropDownButton";
 import SimpleButton from "../Buttons/SimpleButton";
+import usePropertyData from "../../CustomHooks/usePropertyData"; // Import the custom hook
 
 const PropertySection = ({ data, isloading }) => {
-  if (isloading) {
+  const { propertiesData, loading } = usePropertyData(); // Use the custom hook
+  const [filteredData, setFilteredData] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("");
+  console.log(propertiesData)
+  const handleFilterChange = async (filter) => {
+    setSelectedFilter(filter);
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/properties?filter=${filter}`, { withCredentials: true });
+      setFilteredData(response.data.properties);
+    } catch (error) {
+      console.error('Error fetching filtered properties data:', error);
+    }
+  };
+  if (loading) {
     return (
-      <div className="md:flex flex-wrap bg-red-500">
+      <div className="md:flex flex-wrap ">
         {[1, 2, 3].map((index) => (
           <div
             className="flex w-full  md:w-1/3 items-center justify-center"
@@ -47,23 +62,33 @@ const PropertySection = ({ data, isloading }) => {
                 <SimpleButton label="Newest" />
 
                 <div className="mx-4">
-                  <DropDownButton
-                    width="150px"
-                    placeholder="More Recent"
-                    items={[
-                      { value: "More Recent", label: "More Recent" },
-                      { value: "Old", label: "Old" },
-                    ]}
-                  />
+                <DropDownButton
+                      width="150px"
+                      placeholder="More Recent"
+                      items={[
+                        { value: "recent", label: "More Recent" },
+                        { value: "old", label: "Old" },
+                      ]}
+                      onChange={(filter) => handleFilterChange(filter)} // Pass the onChange handler to DropDownButton
+                    />
                 </div>
               </div>
             </div>
 
             <div className="flex flex-wrap m-4">
-              {data.slice(0, 3).map((item) => (
-                <PropertyCard key={item._id} property={item} />
-              ))}
-            </div>
+                {selectedFilter === "" ? (
+                  // Render default data when no filter selected
+                  propertiesData.slice(0, 3).map((item) => (
+                    <PropertyCard key={item._id} property={item} />
+                  ))
+                ) : (
+                  // Render filtered data when filter selected
+                  filteredData.slice(0, 3).map((item) => (
+                    <PropertyCard key={item._id} property={item} />
+                  ))
+                )}
+              </div>
+
           </div>
         </section>
       </div>

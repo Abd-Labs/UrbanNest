@@ -12,11 +12,11 @@ const PropertyCard = ({ property }) => {
         <h3 className="tracking-widest text-indigo-500 text-xs font-medium title-font">
           {property.PropertyType} {/* Display property type as subtitle */}
         </h3>
-        <h2 className="text-lg text-gray-900 font-medium title-font mb-4">
+        <h2 className="text-lg text-gray-900 font-medium title-font mb-4 overflow-hidden line-clamp-1">
           {property.title} {/* Display property title */}
         </h2>
-        <p className="leading-relaxed text-base">
-          {property.description} {/* Display property description */}
+        <p className="leading-relaxed text-base overflow-hidden line-clamp-2">
+          {property.description}
         </p>
       </div>
     </div>

@@ -17,7 +17,7 @@ const Properties = () => {
     <>
       <div className="p-2 ">
         <div className="flex justify-between items-center">
-          <p className="text-black text-xl">All Properties</p>
+          <p className="text-black text-xl mx-4">All Properties</p>
           <SimpleButton
             label="Add Property"
             onclick={handleClick}

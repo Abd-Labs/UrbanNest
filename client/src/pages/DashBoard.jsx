@@ -3,11 +3,8 @@ import InfoCard from "../components/Cards/InfoCard";
 import AnalysticsWidget from "../components/Sections/AnalyticsWidget";
 import RefralSection from "../components/Sections/RefralSection";
 import PropertySection from "../components/Sections/PropertySection";
-import usePropertyData from '../CustomHooks/usePropertyData'; // Import the custom hook
 
 const DashBoard = () => {
-
-   const { propertiesData, loading } = usePropertyData(); // Use the custom hook
 
   return (
      <div className="" >
@@ -32,7 +29,7 @@ const DashBoard = () => {
                   <RefralSection/>
              </div>
 
-             <PropertySection data={propertiesData} isloading={loading}/>
+             <PropertySection/>
 
           </div>
 
