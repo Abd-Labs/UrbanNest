@@ -1,0 +1,29 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const usePropertyData = () => {
+  const [propertiesData, setPropertiesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPropertiesData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/properties`, { withCredentials: true });
+        setPropertiesData(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching properties data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchPropertiesData();
+
+    // Cleanup function can be added here if needed
+
+  }, []);
+
+  return { propertiesData, loading };
+};
+
+export default usePropertyData;

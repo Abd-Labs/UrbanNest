@@ -24,6 +24,7 @@ const AgentCard = ({ agent }) => {
                     <img
                     src={agent.avatar}
                     alt="Profile Avatar"
+                    referrerpolicy="no-referrer" 
                     className={`w-12 h-12 rounded-full mr-4 ${
                       imageLoaded ? "" : "hidden" // Hide the image if it's not loaded yet
                     }`}

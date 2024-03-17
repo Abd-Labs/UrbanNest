@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AgentCard from "../components/Cards/AgentCard";
 import axios from 'axios';
-import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 const Agents = () => {
@@ -29,23 +28,37 @@ const Agents = () => {
     };
   }, []); // Empty dependency array means this effect runs only once when the component mounts
 
-  if (loading) {
-    return <Skeleton count={10} />;
-  }
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
-  return (
-    <div>
+  if (loading) {
+    return (
       <div>
-        {users.map(user => (
-         <AgentCard key={user.id} agent={user} />
+        {[1, 2, 3, 4].map((item) => (
+          <div key={item} className="bg-white rounded-lg shadow-md p-4 animate-pulse">
+            {/* Header */}
+            <div className="w-2/3 h-4 bg-gray-300 rounded mb-2" />
+            {/* Body */}
+            <div className="w-full h-8 bg-gray-300 rounded mb-2" />
+            <div className="w-full h-8 bg-gray-300 rounded mb-2" />
+            <div className="w-1/2 h-8 bg-gray-300 rounded" />
+          </div>
         ))}
       </div>
-    </div>
-  );
+    );
+  }
+    else{
+    return (
+      <div>
+        <div>
+          {users.map(user => (
+           <AgentCard key={user.id} agent={user} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 };
 
 export default Agents;
