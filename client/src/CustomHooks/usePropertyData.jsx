@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import generateApiUrl from '../components/utils/generateApiUrl'
 const usePropertyData = () => {
   const [propertiesData, setPropertiesData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -8,7 +8,8 @@ const usePropertyData = () => {
   useEffect(() => {
     const fetchPropertiesData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/properties`, { withCredentials: true });
+        const apiUrl = generateApiUrl('/api/properties/');
+        const response = await axios.get(apiUrl, { withCredentials: true });
         const { properties, totalPages, currentPage } = response.data; // Extract properties, totalPages, and currentPage from response
         setPropertiesData(properties); // Set propertiesData state with extracted properties
         setLoading(false);

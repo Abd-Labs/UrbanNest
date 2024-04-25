@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AgentCard from "../components/Cards/AgentCard";
 import axios from 'axios';
 import 'react-loading-skeleton/dist/skeleton.css'
+import generateApiUrl from "../components/utils/generateApiUrl";
 
 const Agents = () => {
   const [users, setUsers] = useState([]);
@@ -11,7 +12,8 @@ const Agents = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/api/users`,{ withCredentials: true });
+        const apiUrl = generateApiUrl('/api/users');
+        const response = await axios.get(apiUrl,{ withCredentials: true });
         setUsers(response.data);
       } catch (error) {
         setError(error);

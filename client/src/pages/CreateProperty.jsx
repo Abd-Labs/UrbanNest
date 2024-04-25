@@ -3,6 +3,7 @@ import InputField from "../components/Fields/InputField";
 
 import DropDownButton from "../components/Buttons/DropDownButton";
 import axios from "axios";
+import generateApiUrl from "../components/utils/generateApiUrl";
 
 const CreateProperty = () => {
   const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ const CreateProperty = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = `${process.env.REACT_APP_API_DOMAIN}/api/properties`;
+    const url = generateApiUrl('/api/properties');
 
     const formDataToSend = new FormData();
     formDataToSend.append("title", formData.title);

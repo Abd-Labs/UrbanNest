@@ -1,7 +1,7 @@
 import React ,{useState} from "react";
 import { Link,useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import generateApiUrl from "../components/utils/generateApiUrl";
 const Login = () => {
 
   const [formData, setFormData] = useState({
@@ -13,8 +13,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleGoogleSignIn =  async () => {
+    
+    const apiUrlGoogle = generateApiUrl('/auth/google');
     // Redirect to the server route for Google authentication
-    window.location.href = `${process.env.REACT_APP_API_DOMAIN}/auth/google`;
+    window.location.href = apiUrlGoogle;
   };
 
   
@@ -22,9 +24,10 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      const apiUrlLogin = generateApiUrl('/auth/login');
       // Make a POST request directly within the onSubmit handler
       const response = await axios.post(
-        `${process.env.REACT_APP_API_DOMAIN}/auth/login`,
+        apiUrlLogin,
         formData,
         { withCredentials: true }
       );
