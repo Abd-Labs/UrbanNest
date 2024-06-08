@@ -12,7 +12,7 @@ const Protected = (props) => {
       .split('; ')
       .find(row => row.startsWith('authenticationSuccess='))
       ?.split('=')[1];
-
+      console.log(authenticationSuccess)
       if (authenticationSuccess === 'true') {
         setIsLoggedIn(true);
       } else {

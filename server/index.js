@@ -16,7 +16,7 @@ require('./passport');
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: ['http://localhost:3000', 'https://urban-nest-d9wj.vercel.app'],
     credentials:true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization",

@@ -5,6 +5,18 @@ const createUser = require('../utils/user/createUser.js')
 const CLIENT_URL = process.env.CLIENT_URL;
 const mongoose = require('mongoose');
 
+const cookieOptions = {
+  maxAge: 3600000, // 1 hour
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production', // true in production
+  sameSite: 'None', // Required for cross-site cookies
+};
+
+const nonHttpOnlyCookieOptions = {
+  ...cookieOptions,
+  httpOnly: false,
+};
+
 
 const loginController = async (req,res) => {
 
@@ -29,9 +41,8 @@ const loginController = async (req,res) => {
     const token = generateToken(user);
 
     // Set the token as a cookie
-    res.cookie("jwtToken", token, { maxAge: 3600000, httpOnly: true });
-    res.cookie("authenticationSuccess", "true", { maxAge: 3600000 });
-    // Send a success response
+    res.cookie("jwtToken", token, cookieOptions);
+    res.cookie("authenticationSuccess", "true", nonHttpOnlyCookieOptions);    // Send a success response
     res.json({ success: true, message: "Login successful" });
   } catch (error) {
     console.error(error);
@@ -79,9 +90,8 @@ const signupController = async (req, res) => { // Rename from createUser to sign
       // Generate JWT token
       const token = generateToken(newUser);
 
-      res.cookie("jwtToken", token, { maxAge: 3600000, httpOnly: true });
-      res.cookie("authenticationSuccess", "true", { maxAge: 3600000 });
-      // Send the token and a success message back to the client
+      res.cookie("jwtToken", token, cookieOptions);
+      res.cookie("authenticationSuccess", "true", nonHttpOnlyCookieOptions);// Send the token and a success message back to the client
 
       await session.commitTransaction();
       session.endSession();
@@ -110,8 +120,8 @@ const googleCallbackController = async (req, res) => {
     
     const userObject = await createUser(profile,session);
     const token = generateToken(userObject);
-    res.cookie("jwtToken", token, { maxAge: 3600000, httpOnly: true, secure: true });
-    res.cookie("authenticationSuccess", "true", { maxAge: 3600000, secure: true });
+    res.cookie("jwtToken", token, cookieOptions);
+    res.cookie("authenticationSuccess", "true", nonHttpOnlyCookieOptions);
     await session.commitTransaction();
     session.endSession();
     res.redirect(CLIENT_URL);

@@ -32,11 +32,16 @@ const Login = () => {
         { withCredentials: true }
       );
 
+      document.cookie = "authenticationSuccess=true; Max-Age=3600;";
+
       console.log("Login successful!", response.data);
 
       // Redirect to the home page after successful login
       navigate("/");
     } catch (error) {
+
+      console.log("Came into catch block")
+
       console.error("Login failed:", error.response ? error.response.data.error : error.message);
 
       // Set the error state to display error message to the user

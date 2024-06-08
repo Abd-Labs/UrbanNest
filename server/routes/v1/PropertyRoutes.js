@@ -13,7 +13,13 @@ const router = express.Router();
 
 router.get('/', getAllProperties);
 router.get('/:id',getPropertyDetail);
-router.post('/',upload.array('photos', 5),createProperty);
+if(upload){
+  router.post('/', upload.array('photos', 5), createProperty);
+}
+else{
+  router.post('/', createProperty);
+
+}
 router.put('/:id',updateProperty);
 router.delete('/:id',deleteProperty);
 

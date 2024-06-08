@@ -1,7 +1,12 @@
     const Property = require("../mongodb/models/property");
     const User = require("../mongodb/models/user.js");
     const multer = require("multer");
-    const upload = multer({ dest: "uploads/" });
+      // Function to check if environment is production
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    // Middleware function to handle file uploads with Multer
+    const upload = isProduction ? null : multer({ dest: 'uploads/' });
+
     const path = require('path'); // Add this line
     const fs = require('fs');
 
